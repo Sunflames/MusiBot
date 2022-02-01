@@ -74,18 +74,29 @@ switch(command){
         if (!permissions.has('SPEAK')) return message.reply(' You dont have the correct permissins');
         let queue = client.player.createQueue(message.guild.id);
         await queue.join(message.member.voice.channel);
+        if (args.indexOf("playlist") > -1) {
+            let song = await queue.playlist(args.join(' ')).catch(_ => 
+                {
+                if(!guildQueue)
+                    queue.stop();
+                });
+            await message.reply(`Now playing the playlist: ${song}`);
+            break;
+        }
+        else
+        {
         let song = await queue.play(args.join(' ')).catch(_ => {
             if(!guildQueue)
                 queue.stop();
         });
-        message.reply(`Now playing: ${song.url}`)
+        await message.reply(`Now playing the song: ${song}`);
         break;
-    
+        }
     }
 
 
     //Playlist
-    case (command === 'playlist'):
+    case ('playlist'):
     {
         if (!args.length) return message.reply(' You need to send the second argument!');
         if (!message.member.voice.channel) return message.reply(' You need to be in a channel to execute this command!');
@@ -99,7 +110,7 @@ switch(command){
                 queue.stop();
         }
         );
-        await message.reply(`Now playing: ${playlist.url}`)
+        await message.reply(`Now playing: ${playlist.url}`);
         break;
     }
 
