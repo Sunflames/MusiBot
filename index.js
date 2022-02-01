@@ -65,7 +65,8 @@ client.on('messageCreate', async (message) => {
 
 switch(command){
     //Play
-    case ('play'): {
+    case ('play'): 
+    {
         if (!args.length) return message.reply(' You need to send the second argument!');
         if (!message.member.voice.channel) return message.reply(' You need to be in a channel to execute this command!');
         const permissions = message.member.voice.channel.permissionsFor(message.client.user);
@@ -74,12 +75,12 @@ switch(command){
         let queue = client.player.createQueue(message.guild.id);
         await queue.join(message.member.voice.channel);
         let song = await queue.play(args.join(' ')).catch(_ => {
-            message.reply(`Now playing: ${song}`);
             if(!guildQueue)
                 queue.stop();
         });
         message.reply(`Now playing: ${song.url}`)
         break;
+    
     }
 
 
