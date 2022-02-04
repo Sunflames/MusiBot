@@ -74,13 +74,15 @@ switch(command){
         if (!permissions.has('SPEAK')) return message.reply(' You dont have the correct permissins');
         let queue = client.player.createQueue(message.guild.id);
         await queue.join(message.member.voice.channel);
-        if (args.indexOf("playlist") > -1) {
-            let song = await queue.playlist(args.join(' ')).catch(_ => 
-                {
+        const argsString = args.toString()
+        if (argsString.includes("playlist")) {
+            await new Promise(r => setTimeout(r, 2000));
+            let song = await queue.playlist(args.join(' ')).catch(_ => {
                 if(!guildQueue)
                     queue.stop();
-                });
-            await message.reply(`Now playing the playlist: ${song}`);
+            }
+            );
+            await message.reply(`Now playing playlist: ${argsString}.`);
             break;
         }
         else
@@ -89,13 +91,16 @@ switch(command){
             if(!guildQueue)
                 queue.stop();
         });
-        await message.reply(`Now playing the song: ${song}`);
-        break;
+        await message.reply(`Now playing song: ${argsString}.`);
         }
+        break;
     }
 
 
     //Playlist
+    /*   --- canceled due to absolete code.
+
+    
     case ('playlist'):
     {
         if (!args.length) return message.reply(' You need to send the second argument!');
@@ -110,10 +115,11 @@ switch(command){
                 queue.stop();
         }
         );
-        await message.reply(`Now playing: ${playlist.url}`);
+
+        await message.reply(`Now playing: ${queue.playlist}`);
         break;
     }
-
+*/
 
     case ('skip'):
     {
@@ -155,7 +161,7 @@ switch(command){
           if (guildQueue === undefined) return await message.reply(`No song to loop.`);
         await message.reply(`Stopping song loop.`);
         guildQueue.setRepeatMode(RepeatMode.DISABLED);
-        break;
+        break; 
     }
 
 
