@@ -13,6 +13,7 @@ const player = new Player(client,
     leaveOnEmpty: false, // This options are optional.
 });
 
+
 client.player = player
 .on('channelEmpty',  (queue) =>
         console.log(`Everyone left the Voice Channel, queue ended.`))
@@ -76,13 +77,12 @@ switch(command){
         await queue.join(message.member.voice.channel);
         const argsString = args.toString()
         if (argsString.includes("playlist")) {
-            await new Promise(r => setTimeout(r, 2000));
             let song = await queue.playlist(args.join(' ')).catch(_ => {
                 if(!guildQueue)
                     queue.stop();
             }
             );
-            await message.reply(`Now playing playlist: ${argsString}.`);
+            await message.reply(`Now playing playlist: ${song.url}.`);
             break;
         }
         else
@@ -91,7 +91,7 @@ switch(command){
             if(!guildQueue)
                 queue.stop();
         });
-        await message.reply(`Now playing song: ${argsString}.`);
+        await message.reply(`Now playing song: ${song.url}.`);
         }
         break;
     }
