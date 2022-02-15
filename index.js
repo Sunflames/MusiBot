@@ -123,7 +123,6 @@ switch(command){
 
     case ('skip'):
     {
-        if (!args.length) return message.reply(' You need to send the second argument!');
         if (!message.member.voice.channel) return message.reply(' You need to be in a channel to execute this command!');
         const permissions = message.member.voice.channel.permissionsFor(message.client.user);
         if (!permissions.has('CONNECT')) return message.reply(' You dont have the correct permissins');
@@ -138,7 +137,6 @@ switch(command){
 
     case ('stop'):
     {
-        if (!args.length) return message.reply(' You need to send the second argument!');
         if (!message.member.voice.channel) return message.reply(' You need to be in a channel to execute this command!');
         const permissions = message.member.voice.channel.permissionsFor(message.client.user);
         if (!permissions.has('CONNECT')) return message.reply(' You dont have the correct permissins');
@@ -153,7 +151,6 @@ switch(command){
 
     case ('stoploop'):
     {
-        if (!args.length) return message.reply(' You need to send the second argument!');
         if (!message.member.voice.channel) return message.reply(' You need to be in a channel to execute this command!');
         const permissions = message.member.voice.channel.permissionsFor(message.client.user);
         if (!permissions.has('CONNECT')) return message.reply(' You dont have the correct permissins');
@@ -168,7 +165,6 @@ switch(command){
 
     case ('loop'):
     {
-        if (!args.length) return message.reply(' You need to send the second argument!');
         if (!message.member.voice.channel) return message.reply(' You need to be in a channel to execute this command!');
         const permissions = message.member.voice.channel.permissionsFor(message.client.user);
         if (!permissions.has('CONNECT')) return message.reply(' You dont have the correct permissins');
@@ -183,7 +179,6 @@ switch(command){
 
     case ('queueloop'):
     {
-        if (!args.length) return message.reply(' You need to send the second argument!');
         if (!message.member.voice.channel) return message.reply(' You need to be in a channel to execute this command!');
         const permissions = message.member.voice.channel.permissionsFor(message.client.user);
         if (!permissions.has('CONNECT')) return message.reply(' You dont have the correct permissins');
@@ -213,7 +208,6 @@ switch(command){
 
     case ('clearqueue'):
     {
-        if (!args.length) return message.reply(' You need to send the second argument!');
         if (!message.member.voice.channel) return message.reply(' You need to be in a channel to execute this command!');
         const permissions = message.member.voice.channel.permissionsFor(message.client.user);
         if (!permissions.has('CONNECT')) return message.reply(' You dont have the correct permissins');
@@ -228,7 +222,6 @@ switch(command){
 
     case ('shuffle'):
     {
-        if (!args.length) return message.reply(' You need to send the second argument!');
         if (!message.member.voice.channel) return message.reply(' You need to be in a channel to execute this command!');
         const permissions = message.member.voice.channel.permissionsFor(message.client.user);
         if (!permissions.has('CONNECT')) return message.reply(' You dont have the correct permissins');
@@ -243,7 +236,6 @@ switch(command){
 
     case ('showqueue'):
     {
-        if (!args.length) return message.reply(' You need to send the second argument!');
         if (!message.member.voice.channel) return message.reply(' You need to be in a channel to execute this command!');
         const permissions = message.member.voice.channel.permissionsFor(message.client.user);
         if (!permissions.has('CONNECT')) return message.reply(' You dont have the correct permissins');
@@ -258,7 +250,6 @@ switch(command){
 
     case ('pause'):
     {
-        if (!args.length) return message.reply(' You need to send the second argument!');
         if (!message.member.voice.channel) return message.reply(' You need to be in a channel to execute this command!');
         const permissions = message.member.voice.channel.permissionsFor(message.client.user);
         if (!permissions.has('CONNECT')) return message.reply(' You dont have the correct permissins');
@@ -273,7 +264,6 @@ switch(command){
 
     case ('resume'):
     {
-        if (!args.length) return message.reply(' You need to send the second argument!');
         if (!message.member.voice.channel) return message.reply(' You need to be in a channel to execute this command!');
         const permissions = message.member.voice.channel.permissionsFor(message.client.user);
         if (!permissions.has('CONNECT')) return message.reply(' You dont have the correct permissins');
