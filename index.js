@@ -52,6 +52,10 @@ client.on("ready", () => {
 
 client.login(token.token);
 
+
+
+
+
 const { RepeatMode } = require('discord-music-player');
 
 client.on('messageCreate', async (message) => {
@@ -61,9 +65,13 @@ client.on('messageCreate', async (message) => {
 
     if(!message.content.startsWith(settings.prefix) || message.author.bot) return;
 
+    
     // Commands parameters below:
 /* ___________________________________________________________________________________________________________________________ */
-
+else if (message.content.includes("youtu.be")) {
+    return message.reply(`Does not support youtu.be`)
+}
+else { 
 switch(command){
     //Play
     case ('play'): 
@@ -136,6 +144,19 @@ switch(command){
 
 
     case ('stop'):
+    {
+        if (!message.member.voice.channel) return message.reply(' You need to be in a channel to execute this command!');
+        const permissions = message.member.voice.channel.permissionsFor(message.client.user);
+        if (!permissions.has('CONNECT')) return message.reply(' You dont have the correct permissins');
+        if (!permissions.has('SPEAK')) return message.reply(' You dont have the correct permissins');
+          if (guildQueue === undefined) return await message.reply(`No song to stop.`);
+        guildQueue.stop();
+        await message.reply(`Stopping current queue.`);
+        break;
+    }
+
+    
+    case ('end'):
     {
         if (!message.member.voice.channel) return message.reply(' You need to be in a channel to execute this command!');
         const permissions = message.member.voice.channel.permissionsFor(message.client.user);
@@ -289,5 +310,6 @@ switch(command){
         guildQueue.remove(parseInt(args[0]));
         break;
     }
+}
 }
 });
