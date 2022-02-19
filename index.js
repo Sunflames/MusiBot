@@ -52,10 +52,6 @@ client.on("ready", () => {
 
 client.login(token.token);
 
-
-
-
-
 const { RepeatMode } = require('discord-music-player');
 
 client.on('messageCreate', async (message) => {
@@ -66,21 +62,24 @@ client.on('messageCreate', async (message) => {
     if(!message.content.startsWith(settings.prefix) || message.author.bot) return;
 
     
-    // Commands parameters below:
-/* ___________________________________________________________________________________________________________________________ */
+
 else if (message.content.includes("youtu.be")) {
     return message.reply(`Does not support youtu.be`)
 }
 else { 
+
+    // Commands parameters below:
+/* ___________________________________________________________________________________________________________________________ */
+
 switch(command){
-    //Play
+    //Play // already inputs playlist - playlist command not applicable.
     case ('play'): 
     {
-        if (!args.length) return message.reply(' You need to send the second argument!');
-        if (!message.member.voice.channel) return message.reply(' You need to be in a channel to execute this command!');
+        if (!args.length) return message.reply('You need to send the second argument!');
+        if (!message.member.voice.channel) return message.reply('You need to be in a channel to execute this command!');
         const permissions = message.member.voice.channel.permissionsFor(message.client.user);
-        if (!permissions.has('CONNECT')) return message.reply(' You dont have the correct permissins');
-        if (!permissions.has('SPEAK')) return message.reply(' You dont have the correct permissins');
+        if (!permissions.has('CONNECT')) return message.reply('You dont have the correct permissins');
+        if (!permissions.has('SPEAK')) return message.reply('You dont have the correct permissins');
         let queue = client.player.createQueue(message.guild.id);
         await queue.join(message.member.voice.channel);
         const argsString = args.toString()
@@ -104,37 +103,12 @@ switch(command){
         break;
     }
 
-
-    //Playlist
-    /*   --- canceled due to absolete code.
-
-    
-    case ('playlist'):
-    {
-        if (!args.length) return message.reply(' You need to send the second argument!');
-        if (!message.member.voice.channel) return message.reply(' You need to be in a channel to execute this command!');
-        const permissions = message.member.voice.channel.permissionsFor(message.client.user);
-        if (!permissions.has('CONNECT')) return message.reply(' You dont have the correct permissins');
-        if (!permissions.has('SPEAK')) return message.reply(' You dont have the correct permissins');
-        let queue = client.player.createQueue(message.guild.id);
-        await queue.join(message.member.voice.channel);
-        let song = await queue.playlist(args.join(' ')).catch(_ => {
-            if(!guildQueue)
-                queue.stop();
-        }
-        );
-
-        await message.reply(`Now playing: ${queue.playlist}`);
-        break;
-    }
-*/
-
     case ('skip'):
     {
-        if (!message.member.voice.channel) return message.reply(' You need to be in a channel to execute this command!');
+        if (!message.member.voice.channel) return message.reply('You need to be in a channel to execute this command!');
         const permissions = message.member.voice.channel.permissionsFor(message.client.user);
-        if (!permissions.has('CONNECT')) return message.reply(' You dont have the correct permissins');
-        if (!permissions.has('SPEAK')) return message.reply(' You dont have the correct permissins');
+        if (!permissions.has('CONNECT')) return message.reply('You dont have the correct permissins');
+        if (!permissions.has('SPEAK')) return message.reply('You dont have the correct permissins');
             if (guildQueue === undefined) return await message.reply(`No song to skip.`);
         await message.reply(`Skipping song!`);
         guildQueue.skip();
@@ -145,10 +119,10 @@ switch(command){
 
     case ('stop'):
     {
-        if (!message.member.voice.channel) return message.reply(' You need to be in a channel to execute this command!');
+        if (!message.member.voice.channel) return message.reply('You need to be in a channel to execute this command!');
         const permissions = message.member.voice.channel.permissionsFor(message.client.user);
-        if (!permissions.has('CONNECT')) return message.reply(' You dont have the correct permissins');
-        if (!permissions.has('SPEAK')) return message.reply(' You dont have the correct permissins');
+        if (!permissions.has('CONNECT')) return message.reply('You dont have the correct permissins');
+        if (!permissions.has('SPEAK')) return message.reply('You dont have the correct permissins');
           if (guildQueue === undefined) return await message.reply(`No song to stop.`);
         guildQueue.stop();
         await message.reply(`Stopping current queue.`);
@@ -158,10 +132,10 @@ switch(command){
     
     case ('end'):
     {
-        if (!message.member.voice.channel) return message.reply(' You need to be in a channel to execute this command!');
+        if (!message.member.voice.channel) return message.reply('You need to be in a channel to execute this command!');
         const permissions = message.member.voice.channel.permissionsFor(message.client.user);
-        if (!permissions.has('CONNECT')) return message.reply(' You dont have the correct permissins');
-        if (!permissions.has('SPEAK')) return message.reply(' You dont have the correct permissins');
+        if (!permissions.has('CONNECT')) return message.reply('You dont have the correct permissins');
+        if (!permissions.has('SPEAK')) return message.reply('You dont have the correct permissins');
           if (guildQueue === undefined) return await message.reply(`No song to stop.`);
         guildQueue.stop();
         await message.reply(`Stopping current queue.`);
@@ -172,10 +146,10 @@ switch(command){
 
     case ('stoploop'):
     {
-        if (!message.member.voice.channel) return message.reply(' You need to be in a channel to execute this command!');
+        if (!message.member.voice.channel) return message.reply('You need to be in a channel to execute this command!');
         const permissions = message.member.voice.channel.permissionsFor(message.client.user);
-        if (!permissions.has('CONNECT')) return message.reply(' You dont have the correct permissins');
-        if (!permissions.has('SPEAK')) return message.reply(' You dont have the correct permissins');
+        if (!permissions.has('CONNECT')) return message.reply('You dont have the correct permissins');
+        if (!permissions.has('SPEAK')) return message.reply('You dont have the correct permissins');
           if (guildQueue === undefined) return await message.reply(`No song to loop.`);
         await message.reply(`Stopping song loop.`);
         guildQueue.setRepeatMode(RepeatMode.DISABLED);
@@ -186,10 +160,10 @@ switch(command){
 
     case ('loop'):
     {
-        if (!message.member.voice.channel) return message.reply(' You need to be in a channel to execute this command!');
+        if (!message.member.voice.channel) return message.reply('You need to be in a channel to execute this command!');
         const permissions = message.member.voice.channel.permissionsFor(message.client.user);
-        if (!permissions.has('CONNECT')) return message.reply(' You dont have the correct permissins');
-        if (!permissions.has('SPEAK')) return message.reply(' You dont have the correct permissins');
+        if (!permissions.has('CONNECT')) return message.reply('You dont have the correct permissins');
+        if (!permissions.has('SPEAK')) return message.reply('You dont have the correct permissins');
            if (guildQueue === undefined) return await message.reply(`No song to loop.`);
         guildQueue.setRepeatMode(RepeatMode.SONG);
         await message.reply(`looping song.`);
@@ -200,10 +174,10 @@ switch(command){
 
     case ('queueloop'):
     {
-        if (!message.member.voice.channel) return message.reply(' You need to be in a channel to execute this command!');
+        if (!message.member.voice.channel) return message.reply('You need to be in a channel to execute this command!');
         const permissions = message.member.voice.channel.permissionsFor(message.client.user);
-        if (!permissions.has('CONNECT')) return message.reply(' You dont have the correct permissins');
-        if (!permissions.has('SPEAK')) return message.reply(' You dont have the correct permissins');
+        if (!permissions.has('CONNECT')) return message.reply('You dont have the correct permissins');
+        if (!permissions.has('SPEAK')) return message.reply('You dont have the correct permissins');
             if (guildQueue === undefined) return await message.reply(`No queue to loop.`);
         guildQueue.setRepeatMode(RepeatMode.QUEUE);
         await message.reply(`Looping current queue.`);
@@ -214,11 +188,11 @@ switch(command){
 
     case ('seek'):
     {
-        if (!args.length) return message.reply(' You need to send the second argument!');
-        if (!message.member.voice.channel) return message.reply(' You need to be in a channel to execute this command!');
+        if (!args.length) return message.reply('You need to send the second argument!');
+        if (!message.member.voice.channel) return message.reply('You need to be in a channel to execute this command!');
         const permissions = message.member.voice.channel.permissionsFor(message.client.user);
-        if (!permissions.has('CONNECT')) return message.reply(' You dont have the correct permissins');
-        if (!permissions.has('SPEAK')) return message.reply(' You dont have the correct permissins');
+        if (!permissions.has('CONNECT')) return message.reply('You dont have the correct permissins');
+        if (!permissions.has('SPEAK')) return message.reply('You dont have the correct permissins');
           if (guildQueue === undefined) return await message.reply(`No song to seek.`);
         guildQueue.seek(parseInt(args[0]) * 1000);
         await message.reply(`Seeking current song.`);
@@ -229,10 +203,10 @@ switch(command){
 
     case ('clearqueue'):
     {
-        if (!message.member.voice.channel) return message.reply(' You need to be in a channel to execute this command!');
+        if (!message.member.voice.channel) return message.reply('You need to be in a channel to execute this command!');
         const permissions = message.member.voice.channel.permissionsFor(message.client.user);
-        if (!permissions.has('CONNECT')) return message.reply(' You dont have the correct permissins');
-        if (!permissions.has('SPEAK')) return message.reply(' You dont have the correct permissins');
+        if (!permissions.has('CONNECT')) return message.reply('You dont have the correct permissins');
+        if (!permissions.has('SPEAK')) return message.reply('You dont have the correct permissins');
            if (guildQueue === undefined) return await message.reply(`No queue to clear.`);
         guildQueue.clearQueue();
         await message.reply(`Emptying queue.`);
@@ -243,10 +217,10 @@ switch(command){
 
     case ('shuffle'):
     {
-        if (!message.member.voice.channel) return message.reply(' You need to be in a channel to execute this command!');
+        if (!message.member.voice.channel) return message.reply('You need to be in a channel to execute this command!');
         const permissions = message.member.voice.channel.permissionsFor(message.client.user);
-        if (!permissions.has('CONNECT')) return message.reply(' You dont have the correct permissins');
-        if (!permissions.has('SPEAK')) return message.reply(' You dont have the correct permissins');
+        if (!permissions.has('CONNECT')) return message.reply('You dont have the correct permissins');
+        if (!permissions.has('SPEAK')) return message.reply('You dont have the correct permissins');
           if (guildQueue === undefined) return await message.reply(`No queue to shuffle.`);
         guildQueue.shuffle();
         await message.reply(`Everybody's shuffling... the queue.`);
@@ -257,10 +231,10 @@ switch(command){
 
     case ('showqueue'):
     {
-        if (!message.member.voice.channel) return message.reply(' You need to be in a channel to execute this command!');
+        if (!message.member.voice.channel) return message.reply('You need to be in a channel to execute this command!');
         const permissions = message.member.voice.channel.permissionsFor(message.client.user);
-        if (!permissions.has('CONNECT')) return message.reply(' You dont have the correct permissins');
-        if (!permissions.has('SPEAK')) return message.reply(' You dont have the correct permissins');
+        if (!permissions.has('CONNECT')) return message.reply('You dont have the correct permissins');
+        if (!permissions.has('SPEAK')) return message.reply('You dont have the correct permissins');
          if (guildQueue === undefined) return await message.reply(`No queue to show.`);
         await message.reply(`The queue is: ` + guildQueue);
         console.log(guildQueue);
@@ -271,10 +245,10 @@ switch(command){
 
     case ('pause'):
     {
-        if (!message.member.voice.channel) return message.reply(' You need to be in a channel to execute this command!');
+        if (!message.member.voice.channel) return message.reply('You need to be in a channel to execute this command!');
         const permissions = message.member.voice.channel.permissionsFor(message.client.user);
-        if (!permissions.has('CONNECT')) return message.reply(' You dont have the correct permissins');
-        if (!permissions.has('SPEAK')) return message.reply(' You dont have the correct permissins');
+        if (!permissions.has('CONNECT')) return message.reply('You dont have the correct permissins');
+        if (!permissions.has('SPEAK')) return message.reply('You dont have the correct permissins');
           if (guildQueue === undefined) return message.reply(`Nothing is playing!`);
         guildQueue.setPaused(true);
         await message.reply(`Pausing current song.`);
@@ -285,10 +259,10 @@ switch(command){
 
     case ('resume'):
     {
-        if (!message.member.voice.channel) return message.reply(' You need to be in a channel to execute this command!');
+        if (!message.member.voice.channel) return message.reply('You need to be in a channel to execute this command!');
         const permissions = message.member.voice.channel.permissionsFor(message.client.user);
-        if (!permissions.has('CONNECT')) return message.reply(' You dont have the correct permissins');
-        if (!permissions.has('SPEAK')) return message.reply(' You dont have the correct permissins');
+        if (!permissions.has('CONNECT')) return message.reply('You dont have the correct permissins');
+        if (!permissions.has('SPEAK')) return message.reply('You dont have the correct permissins');
         if (guildQueue === undefined) return message.reply(`Nothing is playing!`);
           if (guildQueue.setPaused) return ("Already paused current song!");
         await message.reply(`Resuming!`);
@@ -300,11 +274,11 @@ switch(command){
 
     case ('remove'):
     {
-        if (!args.length) return message.reply(' You need to send the second argument!');
-        if (!message.member.voice.channel) return message.reply(' You need to be in a channel to execute this command!');
+        if (!args.length) return message.reply('You need to send the second argument!');
+        if (!message.member.voice.channel) return message.reply('You need to be in a channel to execute this command!');
         const permissions = message.member.voice.channel.permissionsFor(message.client.user);
-        if (!permissions.has('CONNECT')) return message.reply(' You dont have the correct permissins');
-        if (!permissions.has('SPEAK')) return message.reply(' You dont have the correct permissins');
+        if (!permissions.has('CONNECT')) return message.reply('You dont have the correct permissins');
+        if (!permissions.has('SPEAK')) return message.reply('You dont have the correct permissins');
         if (guildQueue === undefined) return message.reply(`Nothing is playing!`);
         await message.reply(`Removing songs!`);
         guildQueue.remove(parseInt(args[0]));
