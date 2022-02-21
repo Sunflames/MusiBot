@@ -2,8 +2,7 @@ const Discord = require('discord.js');
 const token = require("./token.json");
 const client = new Discord.Client({ intents: ["GUILDS", "GUILD_PRESENCES", "GUILD_MESSAGES", "GUILD_VOICE_STATES"]});
 const settings = {
-    prefix: '~',
-};
+    prefix: '~'};
 const { Player } = require("discord-music-player");
 const player = new Player(client, 
     {
@@ -72,7 +71,8 @@ else {
 /* ___________________________________________________________________________________________________________________________ */
 
 switch(command){
-    //Play // already inputs playlist - playlist command not applicable.
+    //Play 
+    //Both playlist and single song url - single command for both not neceserry.
     case ('play'): 
     {
         if (!args.length) return message.reply("```You need to send the second argument!```");
@@ -136,7 +136,7 @@ switch(command){
         const permissions = message.member.voice.channel.permissionsFor(message.client.user);
         if (!permissions.has('CONNECT')) return message.reply("```You dont have the correct permissins```");
         if (!permissions.has('SPEAK')) return message.reply("```You dont have the correct permissins```");
-          if (guildQueue === undefined) return await message.reply(`No song to end.`);
+          if (guildQueue === undefined) return await message.reply("```No song to end.```");
         guildQueue.stop();
         await message.reply("```Stopping current queue.```");
         break;
@@ -149,7 +149,7 @@ switch(command){
         const permissions = message.member.voice.channel.permissionsFor(message.client.user);
         if (!permissions.has('CONNECT')) return message.reply("```You dont have the correct permissins```");
         if (!permissions.has('SPEAK')) return message.reply("```You dont have the correct permissins```");
-          if (guildQueue === undefined) return await message.reply(`No song to loop.`);
+          if (guildQueue === undefined) return await message.reply("```No song to loop.```");
         await message.reply("```Stopping song loop.```");
         guildQueue.setRepeatMode(RepeatMode.DISABLED);
         break; 
@@ -162,7 +162,7 @@ switch(command){
         const permissions = message.member.voice.channel.permissionsFor(message.client.user);
         if (!permissions.has('CONNECT')) return message.reply("```You dont have the correct permissins```");
         if (!permissions.has('SPEAK')) return message.reply("```You dont have the correct permissins```");
-           if (guildQueue === undefined) return await message.reply(`No song to loop.`);
+           if (guildQueue === undefined) return await message.reply("```No song to loop.```");
         guildQueue.setRepeatMode(RepeatMode.SONG);
         await message.reply("```looping song.```");
         break;
@@ -175,7 +175,7 @@ switch(command){
         const permissions = message.member.voice.channel.permissionsFor(message.client.user);
         if (!permissions.has('CONNECT')) return message.reply("```You dont have the correct permissins```");
         if (!permissions.has('SPEAK')) return message.reply("```You dont have the correct permissins```");
-            if (guildQueue === undefined) return await message.reply(`No queue to loop.`);
+            if (guildQueue === undefined) return await message.reply("```No queue to loop.```");
         guildQueue.setRepeatMode(RepeatMode.QUEUE);
         await message.reply("```Looping current queue.```");
         break;
@@ -189,7 +189,7 @@ switch(command){
         const permissions = message.member.voice.channel.permissionsFor(message.client.user);
         if (!permissions.has('CONNECT')) return message.reply("```You dont have the correct permissins```");
         if (!permissions.has('SPEAK')) return message.reply("```You dont have the correct permissins```");
-          if (guildQueue === undefined) return await message.reply(`No song to seek.`);
+          if (guildQueue === undefined) return await message.reply("```No song to seek.```");
         guildQueue.seek(parseInt(args[0]) * 1000);
         await message.reply("```Seeking current song.```");
         break;
@@ -202,7 +202,7 @@ switch(command){
         const permissions = message.member.voice.channel.permissionsFor(message.client.user);
         if (!permissions.has('CONNECT')) return message.reply("```You dont have the correct permissins```");
         if (!permissions.has('SPEAK')) return message.reply("```You dont have the correct permissins```");
-           if (guildQueue === undefined) return await message.reply(`No queue to clear.`);
+           if (guildQueue === undefined) return await message.reply("```No queue to clear.```");
         guildQueue.clearQueue();
         await message.reply("```Emptying queue.```");
         break;
@@ -215,7 +215,7 @@ switch(command){
         const permissions = message.member.voice.channel.permissionsFor(message.client.user);
         if (!permissions.has('CONNECT')) return message.reply("```You dont have the correct permissins```");
         if (!permissions.has('SPEAK')) return message.reply("```You dont have the correct permissins```");
-          if (guildQueue === undefined) return await message.reply(`No queue to shuffle.`);
+          if (guildQueue === undefined) return await message.reply("```No queue to shuffle.```");
         guildQueue.shuffle();
         await message.reply("```Everybody's shuffling... the queue.```");
         break;
