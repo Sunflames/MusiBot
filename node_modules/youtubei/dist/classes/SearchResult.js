@@ -68,7 +68,7 @@ let SearchResult = SearchResult_1 = class SearchResult extends Array {
             const response = yield this.client.http.post(`${constants_1.I_END_POINT}/search`, {
                 data: {
                     query,
-                    params: options.params || SearchResult_1.getSearchTypeParam(options.type),
+                    params: options.params || SearchResult_1.getSearchTypeParam(options.type || "all"),
                 },
             });
             this.estimatedResults = +response.data.estimatedResults;
