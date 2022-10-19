@@ -1,8 +1,7 @@
 const Discord = require('discord.js');
 const token = require("./token.json");
 const client = new Discord.Client({ intents: ["GUILDS", "GUILD_PRESENCES", "GUILD_MESSAGES", "GUILD_VOICE_STATES"]});
-const settings = {
-    prefix: '~'};
+const settings = {prefix: '~'};
 const { Player } = require("discord-music-player");
 const player = new Player(client, 
     {
