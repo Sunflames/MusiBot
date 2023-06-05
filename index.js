@@ -102,10 +102,10 @@ const { RepeatMode } = require('discord-music-player');
                     }
                 ]
             },
-            {
+            /*{                 disabled because fuck this one.
                 name: "show-queue",
                 description: "List the current queue of songs"
-            },
+            },*/
             {
                 name: "shuffle",
                 description: "Shuffle the queue of songs"
@@ -271,15 +271,16 @@ switch(interaction.commandName){
         setTimeout(() => interaction.deleteReply(), 15000);
         break;
     }
-    case 'show-queue' :
+    /* case 'show-queue' :              disabled because fuck this one.
     {
             await interaction.deferReply();
         let guildQueue = client.player.getQueue(interaction.guild);
         if (guildQueue === undefined) return void interaction.reply({ content: "**No song is being played!**", ephemeral: true });
-        await interaction.followUp({content: `**The queue is: ${guildQueue.songs}**`});
+        const slicedString = guildQueue.song(0, 1999);
+        await interaction.followUp({content: `**The queue is: ${slicedString}**`});
         setTimeout(() => interaction.deleteReply(), 30000);
         break;
-    }
+    }*/
     case 'pause' :
     {
             await interaction.deferReply();
