@@ -1,4 +1,4 @@
-const {Client, Discord, GatewayIntentBits} = require('discord.js');
+const {Client, GuildMember, GatewayIntentBits,SlashCommandBuilder} = require('discord.js');
 const token = require("./token.json");
 const client = new Client({ intents: [ GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.GuildMessageReactions]});
 const settings = {prefix: '~'};
@@ -12,7 +12,7 @@ const player = new Player(client,
 
 
 client.on("ready", () => {
-    console.log("Gooten Toog Bot is online and kicking!");
+    console.log("🎶 Gooten Toog Bot is online and kicking! 🎶");
 });
 
 client.login(token.token);
@@ -21,188 +21,86 @@ const { RepeatMode } = require('discord-music-player');
 
 client.on('messageCreate', async (message) => {
     const args = message.content.slice(settings.prefix.length).trim().split(/ +/);
-    const command = args.shift().toLowerCase();
     let guildQueue = client.player.getQueue(message.guild.id);
 
     if(!message.content.startsWith(settings.prefix) || message.author.bot) return;
 
     
 else { 
+    if (message.content === "!deploy" && message.author.id === client.application?.owner?.id) {
+        await message.guild.commands.set([
+            {
+                name: "play",
+                description: "Plays a song from youtube",
+                options: [
+                    {
+                        name: "query",
+                        type: 3,
+                        description: "The song you want to play",
+                        required: true
+                    }
+                ]
+            },
+            {
+                name: "skip",
+                description: "Skip to the current song"
+            },
+            {
+                name: "stop",
+                description: "Stop the player"
+            },
+        ]);
 
-    // Commands parameters below:
-/* ___________________________________________________________________________________________________________________________ */
+}
+}})
+client.on("interactionCreate", async (interaction) => {
+    if (!interaction.isCommand() || !interaction.guildId) return;
 
-switch(command){
-    //Play 
-    //Both playlist and single song url - single command for both not necessery.
-    case ('play'): 
+    if (!(interaction.member instanceof GuildMember) || !interaction.member.voice.channel) {
+        return void interaction.reply({ content: "You are not in a voice channel!", ephemeral: true });
+    }
+
+    if (interaction.commandName === "play") 
     {
-        if (!args.length) return message.reply("```You need to send the second argument!```");
-        if (!message.member.voice.channel) return message.reply("```You need to be in a channel to execute this command!```");
-        let queue = client.player.createQueue(message.guild.id);
-        await queue.join(message.member.voice.channel);
-        const argsString = args.toString()
-        if (argsString.includes("playlist")) {
-            let song = await queue.playlist(args.join(' ')).catch(_ => {
-                if(!guildQueue)
-                    queue.stop();
-            }
-            );
-            await message.reply(`Now playing playlist: ${song.url}.`);
-            break;
-        }
-        else
-        {
-        let song = await queue.play(args.join(' ')).catch(_ => {
+        await interaction.deferReply();
+        let queue = client.player.createQueue(interaction.guild);
+        await queue.join(interaction.member.voice.channel);
+        const query = interaction.options.get("query").value;
+        let song = await queue.play(query).catch(err => {
+            console.log(err);
             if(!guildQueue)
                 queue.stop();
-        });
-        await message.reply(`Now playing song: ${song.url}.`);
-        }
-        break;
+            }
+         );
+         await interaction.followUp({ content: `Playing the song:${song.url}` })
     }
-
-
-    case ('skip'):
-    {
-        if (!message.member.voice.channel) return message.reply("```You need to be in a channel to execute this command!```");
-            if (guildQueue === undefined) return await message.reply("```No song to skip.```");
-        await message.reply("```Skipping song!```");
-        guildQueue.skip();
-        break;
-    }
-
-
-    case ('stop'):
-    {
-        if (!message.member.voice.channel) return message.reply("```You need to be in a channel to execute this command!```");
-          if (guildQueue === undefined) return await message.reply("```No song to stop.```");
-        guildQueue.stop();
-        await message.reply("```Stopping current queue.```");
-        break;
-    }
-
     
-    case ('setvolume'):
+    else if (interaction.commandName === "skip") 
     {
-        if (!message.member.voice.channel) return message.reply("```You need to be in a channel to execute this command!```");
-          if (guildQueue === undefined) return await message.reply("```Nothing is playing to change it's volume.```");
-          guildQueue.setVolume(parseInt(args[0]));
-          await message.reply("```changed volume to:```" + parseInt(args[0]));
-        break;
+        await interaction.deferReply();
+        let guildQueue = client.player.getQueue(interaction.guild);
+        if (guildQueue === undefined) return void interaction.followUp({ content: "❌ | No music is being played!" });
+        guildQueue.skip();
+        await interaction.followUp({ content: `Skipped the song` });
     }
 
-    case ('end'):
+    else if (interaction.commandName === "stop") 
     {
-        if (!message.member.voice.channel) return message.reply("```You need to be in a channel to execute this command!```");
-          if (guildQueue === undefined) return await message.reply("```No song to end.```");
-        guildQueue.stop();
-        await message.reply("```Stopping current queue.```");
-        break;
-    }
+        await interaction.deferReply();
+        const queue = player.getQueue(interaction.guildId);
+        if (!queue || !queue.playing) return void interaction.followUp({ content: "❌ | No music is being played!" });
+        queue.destroy();
+        return void interaction.followUp({ content: "🛑 | Stopped the player!" });
+    } 
 
-
-    case ('stoploop'):
-    {
-        if (!message.member.voice.channel) return message.reply("```You need to be in a channel to execute this command!```");
-          if (guildQueue === undefined) return await message.reply("```No song to loop.```");
-        await message.reply("```Stopping song loop.```");
-        guildQueue.setRepeatMode(RepeatMode.DISABLED);
-        break; 
-    }
-
-
-    case ('loop'):
-    {
-        if (!message.member.voice.channel) return message.reply("```You need to be in a channel to execute this command!```");
-           if (guildQueue === undefined) return await message.reply("```No song to loop.```");
-        guildQueue.setRepeatMode(RepeatMode.SONG);
-        await message.reply("```looping song.```");
-        break;
+    else
+     {
+        interaction.reply({
+            content: "Unknown command!",
+            ephemeral: true
+        });
     }
 
 
-    case ('queueloop'):
-    {
-        if (!message.member.voice.channel) return message.reply("```You need to be in a channel to execute this command!```");
-            if (guildQueue === undefined) return await message.reply("```No queue to loop.```");
-        guildQueue.setRepeatMode(RepeatMode.QUEUE);
-        await message.reply("```Looping current queue.```");
-        break;
-    }
 
-
-    case ('seek'):
-    {
-        if (!args.length) return message.reply('You need to send the second argument!');
-        if (!message.member.voice.channel) return message.reply("```You need to be in a channel to execute this command!```");
-          if (guildQueue === undefined) return await message.reply("```No song to seek.```");
-        guildQueue.seek(parseInt(args[0]) * 1000);
-        await message.reply("```Seeking current song.```");
-        break;
-    }
-
-
-    case ('clearqueue'):
-    {
-        if (!message.member.voice.channel) return message.reply("```You need to be in a channel to execute this command!```");
-           if (guildQueue === undefined) return await message.reply("```No queue to clear.```");
-        guildQueue.clearQueue();
-        await message.reply("```Emptying queue.```");
-        break;
-    }
-
-
-    case ('shuffle'):
-    {
-        if (!message.member.voice.channel) return message.reply("```You need to be in a channel to execute this command!```");
-          if (guildQueue === undefined) return await message.reply("```No queue to shuffle.```");
-        guildQueue.shuffle();
-        await message.reply("```Everybody's shuffling... the queue.```");
-        break;
-    }
-
-
-    case ('showqueue'):
-    {
-        if (!message.member.voice.channel) return message.reply("```You need to be in a channel to execute this command!```");
-         if (guildQueue === undefined) return await message.reply("```No queue to show.```");
-        await message.reply(`The queue is: ` + guildQueue);
-        console.log(guildQueue);
-        break;
-    }
-
-
-    case ('pause'):
-    {
-        if (!message.member.voice.channel) return message.reply("```You need to be in a channel to execute this command!```");
-          if (guildQueue === undefined) return message.reply("```Nothing is playing!```");
-        guildQueue.setPaused(true);
-        await message.reply("```Pausing current song.```");
-        break;
-    }
-
-
-    case ('resume'):
-    {
-        if (!message.member.voice.channel) return message.reply("```You need to be in a channel to execute this command!```");
-        if (guildQueue === undefined) return message.reply("```Nothing is playing!```");
-          if (guildQueue.setPaused) return ("```Already paused current song!```");
-        await message.reply("```Resuming!```");
-        guildQueue.setPaused(false);
-        break;
-    }
-
-
-    case ('remove'):
-    {
-        if (!args.length) return message.reply("```You need to send the second argument!```");
-        if (!message.member.voice.channel) return message.reply("```You need to be in a channel to execute this command!```");
-        if (guildQueue === undefined) return message.reply("```Nothing is playing!```");
-        await message.reply("```Removing songs!```");
-        guildQueue.remove(parseInt(args[0]));
-        break;
-    }
-}
-}
 });
