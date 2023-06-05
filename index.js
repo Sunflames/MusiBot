@@ -92,6 +92,18 @@ switch(command){
     }
 
     
+    case ('setvolume'):
+    {
+        if (!message.member.voice.channel) return message.reply("```You need to be in a channel to execute this command!```");
+        const permissions = message.member.voice.channel.permissionsFor(message.client.user);
+        if (!permissions.has('CONNECT')) return message.reply("```You dont have the correct permissins```");
+        if (!permissions.has('SPEAK')) return message.reply("```You dont have the correct permissins```");
+          if (guildQueue === undefined) return await message.reply("```Nothing is playing to change it's volume.```");
+          guildQueue.setVolume(parseInt(args[0]));
+          await message.reply("```changed volume to:```" + parseInt(args[0]));
+        break;
+    }
+
     case ('end'):
     {
         if (!message.member.voice.channel) return message.reply("```You need to be in a channel to execute this command!```");
