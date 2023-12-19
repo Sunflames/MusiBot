@@ -1,3 +1,5 @@
+
+
 const {Client, GuildMember, GatewayIntentBits, SlashCommandBuilder, REST, Routes} = require('discord.js');
 const {clientId, token} = require("./token.json");
 const client = new Client({ intents: [ GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.GuildMessageReactions]});
@@ -17,13 +19,19 @@ client.on("ready", () => {
 client.login(token);
 const { RepeatMode } = require('discord-music-player');
 
-  //Disabled for security, no need to initiate bot from tilde commands anymore.
+//----------------------------------------------------------------------------------------------------
+
+  //----Disabled for security, no need to initiate bot from tilde commands anymore.------
 /*client.on('messageCreate', async (message) => {
     const args = message.content.slice(settings.prefix.length).trim().split(/ +/);
     if(!message.content.startsWith(settings.prefix) || message.author.bot) return;
     
   if (message.content === "!deploy") { */
-      
+
+//----------------------------------------------------------------------------------------------------
+
+
+
 
   const commands = [
             {
@@ -102,10 +110,14 @@ const { RepeatMode } = require('discord-music-player');
                     }
                 ]
             },
-            /*{                 disabled because fuck this one.
+
+            //disabled for now.
+            /*{
                 name: "show-queue",
                 description: "List the current queue of songs"
             },*/
+
+            
             {
                 name: "shuffle",
                 description: "Shuffle the queue of songs"
@@ -271,7 +283,13 @@ switch(interaction.commandName){
         setTimeout(() => interaction.deleteReply(), 15000);
         break;
     }
-    /* case 'show-queue' :              disabled because fuck this one.
+
+    //----------------------------------------------------------------------------------------------------
+
+
+    //disabled due to issue showing allocated queue per server, inputs all at once.
+
+    /* case 'show-queue' :
     {
             await interaction.deferReply();
         let guildQueue = client.player.getQueue(interaction.guild);
@@ -281,6 +299,10 @@ switch(interaction.commandName){
         setTimeout(() => interaction.deleteReply(), 15000);
         break;
     }*/
+
+    //----------------------------------------------------------------------------------------------------
+
+
     case 'pause' :
     {
             await interaction.deferReply();
