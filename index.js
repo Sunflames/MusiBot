@@ -278,7 +278,7 @@ switch(interaction.commandName){
         if (guildQueue === undefined) return void interaction.reply({ content: "**No song is being played!**", ephemeral: true });
         const slicedString = guildQueue.song(0, 1999);
         await interaction.followUp({content: `**The queue is: ${slicedString}**`});
-        setTimeout(() => interaction.deleteReply(), 30000);
+        setTimeout(() => interaction.deleteReply(), 15000);
         break;
     }*/
     case 'pause' :
