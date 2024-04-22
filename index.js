@@ -154,6 +154,7 @@ switch(interaction.commandName){
     {
         await interaction.deferReply();
         let queue = client.player.createQueue(interaction.guild);
+        let guildQueue = client.player.getQueue(interaction.guild);
         await queue.join(interaction.member.voice.channel);
         const query = interaction.options.get("query").value;
         if (query.includes("playlist"))
@@ -164,7 +165,7 @@ switch(interaction.commandName){
                     queue.stop();
              }
             );
-            await interaction.followUp({content: `**Playing the song:** ${song.url}`})
+            await interaction.editReply({content: `**Playing the song:** ${song.url}`})
             setTimeout(() => interaction.deleteReply(), 15000);
             break;
         }
@@ -177,7 +178,7 @@ switch(interaction.commandName){
                 queue.stop();
             }
          );
-         await interaction.followUp({content: `**Playing the song:** ${song.url}`})
+         await interaction.editReply({content: `**Playing the song:** ${song.url}`})
          setTimeout(() => interaction.deleteReply(), 15000);
          break;
         }
@@ -187,7 +188,7 @@ switch(interaction.commandName){
         await interaction.deferReply();
         let guildQueue = client.player.getQueue(interaction.guild);
         if (guildQueue === undefined) return void interaction.reply({ content: "**No song is being played!**", ephemeral: true });
-        await interaction.followUp({ content: `**Skipping the song:** ${guildQueue.nowPlaying}`});
+        await interaction.editReply({ content: `**Skipping the song:** ${guildQueue.nowPlaying}`});
         guildQueue.skip();
         setTimeout(() => interaction.deleteReply(), 15000);
         break;
@@ -199,7 +200,7 @@ switch(interaction.commandName){
         let guildQueue = client.player.getQueue(interaction.guild);
         if (guildQueue === undefined) return void interaction.reply({ content: "**No song is being played!**", ephemeral: true });
         guildQueue.stop();
-        await interaction.followUp({content: "**Stopped the player!**"});
+        await interaction.editReply({content: "**Stopped the player!**"});
         setTimeout(() => interaction.deleteReply(), 15000);
         break;
     } 
@@ -209,7 +210,7 @@ switch(interaction.commandName){
         let guildQueue = client.player.getQueue(interaction.guild);
         if (guildQueue === undefined) return void interaction.reply({ content: "**No song is being played!**", ephemeral: true });
         guildQueue.setVolume(interaction.options.get("volume").value);
-        await interaction.followUp({content: `**Set the volume to:** ${interaction.options.get("volume").value}`});
+        await interaction.editReply({content: `**Set the volume to:** ${interaction.options.get("volume").value}`});
         setTimeout(() => interaction.deleteReply(), 15000);
         break;
      } 
@@ -219,7 +220,7 @@ switch(interaction.commandName){
         let guildQueue = client.player.getQueue(interaction.guild);
         if (guildQueue === undefined) return void interaction.reply({ content: "**No song is being played!**", ephemeral: true });
         guildQueue.stop();
-        await interaction.followUp({content: "**Ended the player!**"});
+        await interaction.editReply({content: "**Ended the player!**"});
         setTimeout(() => interaction.deleteReply(), 15000);
         break;
     } 
@@ -229,7 +230,7 @@ switch(interaction.commandName){
         let guildQueue = client.player.getQueue(interaction.guild);
         if (guildQueue === undefined) return void interaction.reply({ content: "**No song is being played!**", ephemeral: true });
         guildQueue.setRepeatMode(RepeatMode.DISABLED);
-        await interaction.followUp({content: "**Stopped the looping song!**"});
+        await interaction.editReply({content: "**Stopped the looping song!**"});
         setTimeout(() => interaction.deleteReply(), 15000);
         break;
     }
@@ -239,7 +240,7 @@ switch(interaction.commandName){
         let guildQueue = client.player.getQueue(interaction.guild);
         if (guildQueue === undefined) return void interaction.reply({ content: "**No song is being played!**", ephemeral: true });
         guildQueue.setRepeatMode(RepeatMode.SONG);
-        await interaction.followUp({content: "**Looping current song!**"});
+        await interaction.editReply({content: "**Looping current song!**"});
         setTimeout(() => interaction.deleteReply(), 15000);
         break;
     }  
@@ -249,7 +250,7 @@ switch(interaction.commandName){
         let guildQueue = client.player.getQueue(interaction.guild);
         if (guildQueue === undefined) return void interaction.reply({ content: "**No song is being played!**", ephemeral: true });
         guildQueue.setRepeatMode(RepeatMode.QUEUE);
-        await interaction.followUp({content: "**Looping entire queue!**"});
+        await interaction.editReply({content: "**Looping entire queue!**"});
         setTimeout(() => interaction.deleteReply(), 15000);
         break;
     }  
@@ -259,7 +260,7 @@ switch(interaction.commandName){
         let guildQueue = client.player.getQueue(interaction.guild);
         if (guildQueue === undefined) return void interaction.reply({ content: "**No song is being played!**", ephemeral: true });
         guildQueue.seek(interaction.options.get("seconds").value * 1000);
-        await interaction.followUp({content: `**Seeking to:** ${interaction.options.get("seconds").value * 1000}`});
+        await interaction.editReply({content: `**Seeking to:** ${interaction.options.get("seconds").value * 1000}`});
         setTimeout(() => interaction.deleteReply(), 15000);
         break;
     }
@@ -269,7 +270,7 @@ switch(interaction.commandName){
         let guildQueue = client.player.getQueue(interaction.guild);
         if (guildQueue === undefined) return void interaction.reply({ content: "**No song is being played!**", ephemeral: true });
         guildQueue.clearQueue();
-        await interaction.followUp({content: `**Clearing the queue!**`});
+        await interaction.editReply({content: `**Clearing the queue!**`});
         setTimeout(() => interaction.deleteReply(), 15000);
         break;
     }
@@ -279,7 +280,7 @@ switch(interaction.commandName){
         let guildQueue = client.player.getQueue(interaction.guild);
         if (guildQueue === undefined) return void interaction.reply({ content: "**No song is being played!**", ephemeral: true });
         guildQueue.shuffle();
-        await interaction.followUp({content: `**Everybody's shuffling... the queue.**`});
+        await interaction.editReply({content: `**Everybody's shuffling... the queue.**`});
         setTimeout(() => interaction.deleteReply(), 15000);
         break;
     }
@@ -310,7 +311,7 @@ switch(interaction.commandName){
         if (guildQueue === undefined) return void interaction.reply({ content: "**No song is being played!**", ephemeral: true });
         //if (guildQueue.setPaused(true)) return void interaction.reply({ content: "**Already paused this song!**", ephemeral: true });
         guildQueue.setPaused(true);
-        await interaction.followUp({content: `**Pausing Current song!**`});
+        await interaction.editReply({content: `**Pausing Current song!**`});
         setTimeout(() => interaction.deleteReply(), 15000);
         break;
     }
@@ -321,7 +322,7 @@ switch(interaction.commandName){
         if (guildQueue === undefined) return void interaction.reply({ content: "**No song is being played!**", ephemeral: true });
         //if (guildQueue.setpaused(false)) return void interaction.reply({ content: "**Song is already playing!**", ephemeral: true });
         guildQueue.setPaused(false);
-        await interaction.followUp({content: `**Unpausing Current song!**`});
+        await interaction.editReply({content: `**Unpausing Current song!**`});
         setTimeout(() => interaction.deleteReply(), 15000);
         break;
     }
@@ -331,7 +332,7 @@ switch(interaction.commandName){
         let guildQueue = client.player.getQueue(interaction.guild);
         if (guildQueue === undefined) return void interaction.reply({ content: "**No song is being played!**", ephemeral: true });
         guildQueue.remove(interaction.options.get("number").value);
-        await interaction.followUp({content: `**removing song number:** ${interaction.options.get("number").value} **from the list!**`});
+        await interaction.editReply({content: `**removing song number:** ${interaction.options.get("number").value} **from the list!**`});
         setTimeout(() => interaction.deleteReply(), 15000);
         break;
     }
