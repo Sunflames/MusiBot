@@ -19,20 +19,6 @@ client.on("ready", () => {
 client.login(token);
 const { RepeatMode } = require('discord-music-player');
 
-//----------------------------------------------------------------------------------------------------
-
-  //----Disabled for security, no need to initiate bot from tilde commands anymore.------
-/*client.on('messageCreate', async (message) => {
-    const args = message.content.slice(settings.prefix.length).trim().split(/ +/);
-    if(!message.content.startsWith(settings.prefix) || message.author.bot) return;
-    
-  if (message.content === "!deploy") { */
-
-//----------------------------------------------------------------------------------------------------
-
-
-
-
   const commands = [
             {
                 name: "play",
